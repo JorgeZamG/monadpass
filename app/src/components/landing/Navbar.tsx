@@ -3,30 +3,27 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Ticket, Menu, X } from 'lucide-react'
+import { ConnectButton } from '@/components/wallet'
 
 export interface NavLink { label: string; href: string }
 
 export interface NavbarProps {
-  logo?: string
+  logo?:  string
   links?: NavLink[]
-  ctaLabel?: string
-  ctaHref?: string
 }
 
 const defaultLinks: NavLink[] = [
-  { label: 'Funciones',   href: '#features'     },
+  { label: 'Funciones',     href: '#features'     },
   { label: 'Cómo funciona', href: '#how-it-works' },
-  { label: 'Precios',     href: '#pricing'      },
-  { label: 'Docs',        href: '#'             },
+  { label: 'Precios',       href: '#pricing'      },
+  { label: 'Docs',          href: '#'             },
 ]
 
 export default function Navbar({
-  logo     = 'MonadPass',
-  links    = defaultLinks,
-  ctaLabel = 'Empezar ahora',
-  ctaHref  = '#',
+  logo  = 'MonadPass',
+  links = defaultLinks,
 }: NavbarProps) {
-  const [scrolled,    setScrolled]    = useState(false)
+  const [scrolled,   setScrolled]   = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
@@ -44,7 +41,7 @@ export default function Navbar({
       <div className="container-lg">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group" aria-label="MonadPass home">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="MonadPass home">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-600 to-brand-400 flex items-center justify-center glow-purple">
               <Ticket size={18} className="text-white" strokeWidth={2.5} />
             </div>
@@ -64,11 +61,9 @@ export default function Navbar({
             ))}
           </nav>
 
-          {/* CTA */}
+          {/* Wallet button — desktop */}
           <div className="hidden md:block">
-            <Link href={ctaHref} className="btn-primary text-sm py-2.5 px-5">
-              {ctaLabel}
-            </Link>
+            <ConnectButton />
           </div>
 
           {/* Mobile toggle */}
@@ -95,13 +90,7 @@ export default function Navbar({
               </Link>
             ))}
             <div className="pt-3">
-              <Link
-                href={ctaHref}
-                onClick={() => setMobileOpen(false)}
-                className="btn-primary block text-center"
-              >
-                {ctaLabel}
-              </Link>
+              <ConnectButton />
             </div>
           </div>
         )}
