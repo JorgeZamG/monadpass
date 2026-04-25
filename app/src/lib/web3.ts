@@ -28,18 +28,21 @@ export async function getBrowserProvider() {
 export async function ensureLocalChain() {
   if (typeof window === "undefined" || !window.ethereum) return;
 
+  const chainIdHex = "0x" + LOCAL_CONTRACTS.chainId.toString(16);
+  const chainName = process.env.NEXT_PUBLIC_CHAIN_NAME ?? "Hardhat Local";
+
   try {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: "0x7a69" }],
+      params: [{ chainId: chainIdHex }],
     });
   } catch {
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
       params: [
         {
-          chainId: "0x7a69",
-          chainName: "Hardhat Local",
+          chainId: chainIdHex,
+          chainName,
           nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
           rpcUrls: [LOCAL_CONTRACTS.rpcUrl],
         },

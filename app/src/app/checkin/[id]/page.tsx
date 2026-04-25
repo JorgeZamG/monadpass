@@ -46,6 +46,7 @@ export default function CheckinPage({ params }: Props) {
   const [status, setStatus] = useState("");
   const [pending, setPending] = useState(false);
   const [mintedBadgeId, setMintedBadgeId] = useState("");
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   const parsedPayload = useMemo(() => parsePayload(payload), [payload]);
 
@@ -131,7 +132,7 @@ export default function CheckinPage({ params }: Props) {
             <h2>{summary.name}</h2>
             <ul>
               <li>Ubicación: {summary.location}</li>
-              <li>Precio: {formatEther(summary.price)} ETH</li>
+              <li>Precio: {formatEther(summary.price)} MON</li>
               <li>Vendidos: {summary.sold.toString()}</li>
               <li>Check-ins: {summary.checkedIn.toString()}</li>
               <li>Burned: {summary.burned.toString()}</li>
@@ -140,19 +141,50 @@ export default function CheckinPage({ params }: Props) {
             </ul>
           </div>
 
+          <div className="card">
+            <h2>QR Scanner</h2>
+            <p className="muted" style={{ marginTop: 0 }}>
+              Point the camera at an attendee&apos;s ticket QR.
+            </p>
+
+            {!scannerOpen ? (
+              <button className="btn" onClick={() => setScannerOpen(true)}>
+                Open Camera Scanner
+              </button>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div className="qr-mock-viewport">
+                  <div className="qr-mock-corners">
+                    <span /><span /><span /><span />
+                  </div>
+                  <div className="qr-scan-line" />
+                  <span style={{ color: "var(--muted)", fontSize: "0.8rem", zIndex: 1 }}>
+                    Camera not available
+                  </span>
+                </div>
+                <p className="muted" style={{ fontSize: "0.85rem", margin: 0 }}>
+                  Camera scanning coming soon — use manual entry below.
+                </p>
+                <button className="btn btn-ghost" style={{ alignSelf: "flex-start" }} onClick={() => setScannerOpen(false)}>
+                  Close Scanner
+                </button>
+              </div>
+            )}
+          </div>
+
           <form className="card" onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-            <h2>Ejecutar check-in</h2>
+            <h2>Manual Check-in</h2>
             <label>
-              Payload QR
-              <textarea value={payload} onChange={(e) => setPayload(e.target.value)} rows={5} placeholder='{"eventId":1,"tokenId":1,"owner":"0x..."}' />
+              Paste QR payload
+              <textarea value={payload} onChange={(e) => setPayload(e.target.value)} rows={4} placeholder='{"eventId":1,"tokenId":1,"owner":"0x..."}' />
             </label>
             <label>
-              Token ID manual
-              <input value={tokenId} onChange={(e) => setTokenId(e.target.value)} />
+              Token ID
+              <input value={tokenId} onChange={(e) => setTokenId(e.target.value)} placeholder="1" />
             </label>
-            <p className="muted">Preview ticket: {ownerPreview || "Cargando..."}</p>
-            {mintedBadgeId ? <p className="muted">Badge detectado: #{mintedBadgeId}</p> : null}
-            <button className="btn" disabled={pending}>{pending ? "Procesando..." : "Hacer check-in"}</button>
+            <p className="muted" style={{ margin: 0 }}>Ticket: {ownerPreview || "—"}</p>
+            {mintedBadgeId ? <p className="muted" style={{ margin: 0 }}>Badge already minted: #{mintedBadgeId}</p> : null}
+            <button className="btn" disabled={pending}>{pending ? "Processing…" : "Check In"}</button>
           </form>
         </>
       )}

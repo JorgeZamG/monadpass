@@ -11,12 +11,12 @@ function toUnix(value: string) {
 
 export default function NewOrganizerEventPage() {
   const [form, setForm] = useState({
-    name: "Monad CDMX Meetup",
-    location: "CDMX",
+    name: "Monad Blitz",
+    location: "Online",
     startAt: "2026-05-20T19:00",
     endAt: "2026-05-20T23:00",
     maxSupply: "150",
-    price: "0.05",
+    price: "1",
   });
   const [status, setStatus] = useState<string>("");
   const [createdEventId, setCreatedEventId] = useState<string>("");
@@ -42,7 +42,7 @@ export default function NewOrganizerEventPage() {
       setStatus(`Transacción enviada: ${tx.hash}`);
       await tx.wait();
       setCreatedEventId(nextEventId.toString());
-      setStatus(`Evento #${nextEventId.toString()} creado · precio ${form.price} ETH`);
+      setStatus(`Evento #${nextEventId.toString()} creado · precio ${form.price} MON`);
     } catch (error) {
       const message = error instanceof Error ? error.message : "No pude crear el evento";
       setStatus(message);
@@ -79,7 +79,7 @@ export default function NewOrganizerEventPage() {
           <input type="number" min="1" value={form.maxSupply} onChange={(e) => setForm({ ...form, maxSupply: e.target.value })} />
         </label>
         <label>
-          Precio (ETH local)
+          Precio (MON)
           <input type="number" step="0.0001" min="0" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
         </label>
         <button className="btn" disabled={pending}>{pending ? "Creando..." : "Crear evento"}</button>
@@ -99,7 +99,7 @@ export default function NewOrganizerEventPage() {
 
       <div className="card">
         <p className="muted">Tip: usa la wallet local de Hardhat en MetaMask. Cuenta #0 sirve como organizer.</p>
-        <p className="muted">Precio actual del form: {formatEther(parseEther(form.price || "0"))} ETH</p>
+        <p className="muted">Precio actual del form: {formatEther(parseEther(form.price || "0"))} MON</p>
       </div>
     </main>
   );
