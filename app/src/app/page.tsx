@@ -26,7 +26,7 @@ export default function HomePage() {
         <p className="muted">Primero crea un evento. Luego usa su ID para compra y check-in.</p>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 16 }}>
           <Link className="btn" href="/organizer/new">Crear evento</Link>
-          <Link className="btn" href="/events/1">Comprar ticket</Link>
+          <Link className="btn" href="/events">Comprar ticket</Link>
           <Link className="btn" href="/checkin/1">Panel de check-in</Link>
         </div>
       </div>
