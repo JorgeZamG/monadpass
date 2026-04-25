@@ -1,0 +1,9 @@
+{
+  "name": "monadpass",
+  "version": 2,
+  "rootDirectory": "app",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next"
+}
