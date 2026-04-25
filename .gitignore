@@ -17,4 +17,5 @@ TOOLS.md
 USER.md
 .env
 .env.*
+!app/.env.example
 .DS_Store
