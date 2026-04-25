@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { formatEther, parseEther } from "ethers";
 import { getReadCoreContract, getWriteCoreContract } from "@/lib/web3";
 
@@ -9,15 +9,36 @@ function toUnix(value: string) {
   return Math.floor(new Date(value).getTime() / 1000);
 }
 
-export default function NewOrganizerEventPage() {
-  const [form, setForm] = useState({
-    name: "Monad Blitz",
-    location: "Online",
-    startAt: "2026-05-20T19:00",
-    endAt: "2026-05-20T23:00",
+function formatDateTimeLocal(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+function getDefaultForm() {
+  const now = new Date();
+  const start = new Date(now);
+  start.setHours(18, 0, 0, 0);
+
+  const end = new Date(now);
+  end.setHours(23, 0, 0, 0);
+
+  return {
+    name: "Monad Blitz GDL",
+    location: "Guadalajara, MX",
+    startAt: formatDateTimeLocal(start),
+    endAt: formatDateTimeLocal(end),
     maxSupply: "150",
     price: "1",
-  });
+  };
+}
+
+export default function NewOrganizerEventPage() {
+  const defaultForm = useMemo(() => getDefaultForm(), []);
+  const [form, setForm] = useState(defaultForm);
   const [status, setStatus] = useState<string>("");
   const [createdEventId, setCreatedEventId] = useState<string>("");
   const [pending, setPending] = useState(false);
@@ -55,7 +76,7 @@ export default function NewOrganizerEventPage() {
     <main>
       <Link href="/">&larr; Back</Link>
       <h1>Crear evento</h1>
-      <p className="muted">Esto llama directamente a MonadPassCore.createEvent(...).</p>
+      <p className="muted">Esto llama directamente a MonadPassCore.createEvent(...). Ya viene preconfigurado para crear hoy <strong>Monad Blitz GDL</strong> con ticket en 1 MON.</p>
 
       <form className="card" onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
         <label>
