@@ -1,20 +1,20 @@
 import { BrowserProvider, Contract, JsonRpcProvider } from 'ethers'
 import { COMMEMORATIVE_BADGE_ABI, EVENT_TICKET_ABI, MONADPASS_CORE_ABI } from './abis'
-import { getContracts } from './contracts'
+import { LOCAL_CONTRACTS } from './contracts'
 import { getActiveChain, hexChainId } from './chains'
 
 declare global {
   interface Window {
     ethereum?: {
-      request:        (args: { method: string; params?: unknown[] | object }) => Promise<unknown>
-      on?:            (event: string, handler: (...args: unknown[]) => void) => void
+      request:         (args: { method: string; params?: unknown[] | object }) => Promise<unknown>
+      on?:             (event: string, handler: (...args: unknown[]) => void) => void
       removeListener?: (event: string, handler: (...args: unknown[]) => void) => void
     }
   }
 }
 
 export function getReadProvider() {
-  return new JsonRpcProvider(getContracts().rpcUrl)
+  return new JsonRpcProvider(LOCAL_CONTRACTS.rpcUrl)
 }
 
 export async function getBrowserProvider() {
@@ -29,7 +29,7 @@ export async function getBrowserProvider() {
 
 export async function ensureCorrectChain() {
   if (typeof window === 'undefined' || !window.ethereum) return
-  const chain = getActiveChain()
+  const chain    = getActiveChain()
   const chainHex = hexChainId(chain)
   try {
     await window.ethereum.request({
@@ -40,39 +40,36 @@ export async function ensureCorrectChain() {
     await window.ethereum.request({
       method: 'wallet_addEthereumChain',
       params: [{
-        chainId:             chainHex,
-        chainName:           chain.name,
-        nativeCurrency:      chain.nativeCurrency,
-        rpcUrls:             [chain.rpcUrl],
-        blockExplorerUrls:   chain.explorer ? [chain.explorer] : [],
+        chainId:           chainHex,
+        chainName:         chain.name,
+        nativeCurrency:    chain.nativeCurrency,
+        rpcUrls:           [chain.rpcUrl],
+        blockExplorerUrls: chain.explorer ? [chain.explorer] : [],
       }],
     })
   }
 }
 
 export function getReadCoreContract() {
-  const c = getContracts()
-  return new Contract(c.monadPassCore, MONADPASS_CORE_ABI, getReadProvider())
+  return new Contract(LOCAL_CONTRACTS.monadPassCore, MONADPASS_CORE_ABI, getReadProvider())
 }
 
 export function getReadTicketContract() {
-  const c = getContracts()
-  return new Contract(c.eventTicket, EVENT_TICKET_ABI, getReadProvider())
+  return new Contract(LOCAL_CONTRACTS.eventTicket, EVENT_TICKET_ABI, getReadProvider())
 }
 
 export function getReadBadgeContract() {
-  const c = getContracts()
-  return new Contract(c.commemorativeBadge, COMMEMORATIVE_BADGE_ABI, getReadProvider())
+  return new Contract(LOCAL_CONTRACTS.commemorativeBadge, COMMEMORATIVE_BADGE_ABI, getReadProvider())
 }
 
 export async function getConnectedAddress() {
   const provider = await getBrowserProvider()
-  const signer = await provider.getSigner()
+  const signer   = await provider.getSigner()
   return signer.getAddress()
 }
 
 export async function getWriteCoreContract() {
   const provider = await getBrowserProvider()
-  const signer = await provider.getSigner()
-  return new Contract(getContracts().monadPassCore, MONADPASS_CORE_ABI, signer)
+  const signer   = await provider.getSigner()
+  return new Contract(LOCAL_CONTRACTS.monadPassCore, MONADPASS_CORE_ABI, signer)
 }

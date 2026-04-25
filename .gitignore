@@ -2,6 +2,7 @@ node_modules/
 package-lock.json
 app/.next/
 app/node_modules/
+app/tsconfig.tsbuildinfo
 contracts/node_modules/
 contracts/cache/
 contracts/artifacts/
@@ -16,6 +17,7 @@ TOOLS.md
 USER.md
 .env
 .env.*
+!app/.env.example
 .DS_Store
 __pycache__/
 *.pyc
