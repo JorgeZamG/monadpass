@@ -132,7 +132,7 @@ export default function CheckinPage({ params }: Props) {
             <h2>{summary.name}</h2>
             <ul>
               <li>Ubicación: {summary.location}</li>
-              <li>Precio: {formatEther(summary.price)} ETH</li>
+              <li>Precio: {formatEther(summary.price)} MON</li>
               <li>Vendidos: {summary.sold.toString()}</li>
               <li>Check-ins: {summary.checkedIn.toString()}</li>
               <li>Burned: {summary.burned.toString()}</li>

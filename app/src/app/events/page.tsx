@@ -149,7 +149,7 @@ export default function EventsListPage() {
               }}
             >
               <span>
-                <strong>{formatEther(event.price)} ETH</strong>
+                <strong>{formatEther(event.price)} MON</strong>
               </span>
               <span
                 style={soldOut ? { color: "#ef4444" } : { color: "var(--muted)" }}

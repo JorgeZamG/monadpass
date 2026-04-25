@@ -147,7 +147,7 @@ export default function EventDetailPage({ params }: Props) {
             <ul>
               <li>Inicio: {fmtTs(summary.startTime)}</li>
               <li>Fin: {fmtTs(summary.endTime)}</li>
-              <li>Precio: {formatEther(summary.price)} ETH</li>
+              <li>Precio: {formatEther(summary.price)} MON</li>
               <li>Supply: {summary.maxSupply.toString()}</li>
               <li>Vendidos: {summary.sold.toString()}</li>
               <li>Disponibles: {(summary.maxSupply - summary.sold).toString()}</li>
@@ -183,7 +183,7 @@ export default function EventDetailPage({ params }: Props) {
           <div className="card">
             <h2>Analítica</h2>
             <ul>
-              <li>Revenue: {formatEther(summary.revenue)} ETH</li>
+              <li>Revenue: {formatEther(summary.revenue)} MON</li>
               <li>Check-ins: {summary.checkedIn.toString()}</li>
               <li>Burned: {summary.burned.toString()}</li>
               <li>Última venta: {fmtTs(summary.lastSaleAt)}</li>
