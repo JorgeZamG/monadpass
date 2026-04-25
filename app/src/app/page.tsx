@@ -1,6 +1,17 @@
-import Link from "next/link";
+import {
+  Navbar,
+  Hero,
+  StatsBar,
+  Features,
+  HowItWorks,
+  AppShowcase,
+  Testimonials,
+  Pricing,
+  FinalCTA,
+  Footer,
+} from '@/components/landing'
 
-export default function HomePage() {
+export default function LandingPage() {
   return (
     <main>
       <h1>MonadPass</h1>
